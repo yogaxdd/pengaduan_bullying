@@ -2,25 +2,40 @@
 
 Sistem web untuk pelaporan bullying secara anonim dengan komunikasi dua arah antara pelapor dan konselor. Dibangun dengan PHP murni dan MySQL.
 
-## 📋 Fitur Utama
+## ✨ Fitur Unggulan
+
+### 🎨 Kustomisasi Sekolah
+- **Upload Logo Sekolah** - Tampilkan identitas sekolah di semua halaman
+- **Background Custom** - Upload foto gedung sekolah sebagai background
+- **Nama & Tagline** - Sesuaikan nama dan tagline sekolah
+- **Settings Panel** - Kelola semua kustomisasi dari admin panel
+- **Support Format** - JPG, PNG, GIF, WEBP
+
+### 💬 Live Chat System
+- **Real-time Chat** - Auto-refresh setiap 2 detik tanpa reload halaman
+- **Facebook-style Chat Box** - Chat box di pojok kanan bawah (admin)
+- **Multi-chat Support** - Admin bisa chat dengan 3 siswa sekaligus
+- **Unread Badge** - Notifikasi pesan belum dibaca
+- **Report Details** - Info laporan ditampilkan di chat interface
 
 ### Untuk Siswa (Pelapor Anonim)
 - ✅ **Laporan 100% Anonim** - Tidak perlu login atau memberikan identitas
 - 📝 **Form Pelaporan Lengkap** - Kategori, kronologi, bukti, tingkat urgensi
 - 📎 **Upload Bukti** - Foto, video, dokumen (maks 10MB)
 - 🔐 **Kode Tracking & PIN** - Untuk cek status dan komunikasi
-- 💬 **Chat Anonim** - Komunikasi dua arah dengan konselor
+- 💬 **Live Chat Anonim** - Komunikasi real-time dengan konselor
 - 🚪 **Quick Exit Button** - Keluar cepat dengan tombol ESC
 - 💾 **Auto-save Draft** - Draft tersimpan otomatis di browser
 
 ### Untuk Admin/Konselor
 - 📊 **Dashboard Statistik** - Overview laporan dan notifikasi
 - 📋 **Manajemen Laporan** - Lihat, filter, dan proses laporan
-- 💬 **Balas Pesan Anonim** - Komunikasi dengan pelapor
+- 💬 **Live Chat Widget** - Chat real-time dengan Facebook-style interface
 - 📈 **Update Status** - Tracking progress penanganan
-- 👥 **Assignment** - Assign laporan ke staf BK tertentu
+- 👥 **Multi-role Support** - Super Admin dan Staff BK
 - 📜 **Audit Trail** - Log semua aktivitas admin
 - 🔔 **Notifikasi Real-time** - Alert untuk laporan darurat
+- ⚙️ **Settings Panel** - Kustomisasi logo, background, dan info sekolah
 
 ## 🚀 Instalasi
 
@@ -38,10 +53,12 @@ Sistem web untuk pelaporan bullying secara anonim dengan komunikasi dua arah ant
    C:\xampp\htdocs\pengaduan_bullying\
    ```
 
-2. **Buat Database MySQL**
+2. **Import Database**
    - Buka phpMyAdmin (http://localhost/phpmyadmin)
-   - Buat database baru dengan nama `pengaduan_bullying`
-   - Import file `database/pengaduan_bullying.sql`
+   - Klik tab "Import"
+   - Pilih file `database/pengaduan_bullying_fixed.sql`
+   - Klik "Go" untuk import
+   - Database `pengaduan_bullying` akan otomatis dibuat beserta semua tabelnya
 
 3. **Konfigurasi Database**
    - Edit file `config/database.php`
@@ -54,10 +71,17 @@ Sistem web untuk pelaporan bullying secara anonim dengan komunikasi dua arah ant
    ```
 
 4. **Setup Folder Upload**
-   - Folder `uploads/` akan dibuat otomatis di luar webroot
-   - Pastikan PHP memiliki permission write
+   - Folder `uploads/` sudah tersedia di root project
+   - Pastikan folder memiliki write permission (chmod 755)
 
-5. **Akses Aplikasi**
+5. **Kustomisasi Sekolah (Opsional)**
+   - Login sebagai admin
+   - Buka menu "Pengaturan"
+   - Upload logo sekolah dan foto gedung
+   - Ubah nama dan tagline sekolah
+   - Simpan pengaturan
+
+6. **Akses Aplikasi**
    - Frontend (Siswa): http://localhost/pengaduan_bullying/public/
    - Admin Panel: http://localhost/pengaduan_bullying/admin/
 
@@ -66,9 +90,10 @@ Sistem web untuk pelaporan bullying secara anonim dengan komunikasi dua arah ant
 ### Admin Login
 - **Username:** admin
 - **Password:** Admin123!
-- **Email:** admin@sekolah.id
+- **Email:** admin@school.com
+- **Role:** Super Admin
 
-> ⚠️ **PENTING:** Segera ganti password default setelah instalasi!
+> ⚠️ **PENTING:** Segera ganti password default setelah instalasi pertama kali!
 
 ## 📁 Struktur Folder
 
@@ -199,12 +224,37 @@ WHERE username = 'admin';
 ### Tabel Utama
 - `reports` - Laporan bullying
 - `categories` - Kategori kasus
-- `report_messages` - Pesan chat anonim
+- `report_messages` - Pesan chat anonim (live chat)
 - `report_attachments` - File bukti
-- `admin_users` - Data admin
-- `audit_log` - Log aktivitas
+- `admin_users` - Data admin & konselor
+- `system_settings` - Kustomisasi sekolah (logo, background, nama)
+- `audit_log` - Log aktivitas admin
 - `notifications` - Notifikasi admin
-- `rate_limit` - Anti spam
+- `rate_limit` - Anti spam & rate limiting
+
+## 🎯 Fitur Teknis
+
+### Live Chat System
+- **Polling Interval:** 2 detik untuk real-time experience
+- **Multi-chat:** Maksimal 3 chat box bersamaan
+- **Auto-scroll:** Smart scroll ke pesan terbaru
+- **Minimize/Maximize:** Kontrol chat box dengan mudah
+- **AJAX-based:** Kirim & terima pesan tanpa reload
+
+### Security Features
+- **CSRF Protection:** Token di semua form
+- **SQL Injection Prevention:** Prepared statements PDO
+- **XSS Protection:** Input sanitization & output escaping
+- **Password Hashing:** bcrypt dengan cost 10
+- **Rate Limiting:** Anti spam & brute force
+- **Session Security:** Regenerate ID, httponly cookies
+- **File Upload Validation:** MIME type & extension check
+
+### Performance
+- **Optimized Queries:** Indexed columns untuk fast lookup
+- **Lazy Loading:** Load data hanya saat diperlukan
+- **Caching:** Browser cache untuk assets
+- **Compressed Images:** Support WEBP untuk file size kecil
 
 ## 🤝 Kontribusi
 
@@ -214,17 +264,17 @@ Sistem ini open source dan menerima kontribusi untuk:
 - Dokumentasi
 - Testing
 - UI/UX improvements
+- Translasi bahasa
 
 ## 📝 Lisensi
 
-MIT License - Bebas digunakan dan dimodifikasi
+MIT License - Bebas digunakan dan dimodifikasi untuk keperluan pendidikan
 
 ## 🆘 Support & Kontak
 
 Untuk bantuan teknis atau pertanyaan:
-- Buat issue di repository
-- Email: yogariski290508@gmail.com
-- Dokumentasi: /public/info.php
+- Buat issue di GitHub repository
+- Dokumentasi lengkap: /public/info.php
 
 ## 🏆 Credits
 
@@ -270,8 +320,28 @@ DELETE FROM rate_limit WHERE last_attempt < DATE_SUB(NOW(), INTERVAL 1 DAY);
 - Monitor upload folder size
 - Review error logs regularly
 
+## 🌟 Changelog
+
+### Version 2.0.0 (Latest)
+- ✨ Live chat system dengan auto-refresh 2 detik
+- 🎨 Kustomisasi sekolah (logo, background, nama)
+- 💬 Facebook-style chat widget untuk admin
+- 🔄 Multi-chat support (3 chat bersamaan)
+- 📱 Improved mobile responsive design
+- 🎯 Professional school-friendly UI
+- 🖼️ Support WEBP format untuk images
+- ⚡ Performance improvements
+
+### Version 1.0.0
+- 📝 Form pelaporan anonim
+- 🔐 Tracking code & PIN system
+- 📊 Admin dashboard
+- 💬 Basic messaging system
+- 📎 File upload support
+
 ---
-**Versi:** 1.0.0  
-**Tanggal Rilis:** November 2025  
-**PHP Version:** 8.x  
-**MySQL Version:** 5.7+
+**Versi:** 2.0.0  
+**Tanggal Update:** November 2024  
+**PHP Version:** 8.x+  
+**MySQL Version:** 5.7+  
+**Browser Support:** Chrome, Firefox, Safari, Edge (latest versions)
